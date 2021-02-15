@@ -3,7 +3,7 @@ From: ubuntu:18.04
 
 %labels
 
-    CREATER Zhinoos
+    CREATER Maurice
 
 %post
      
