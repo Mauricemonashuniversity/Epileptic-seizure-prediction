@@ -1,16 +1,22 @@
-Bootstrap: docker
+Bootstrap: library
 From: ubuntu:18.04
 
-%labels
-
-    CREATER Maurice
-
 %post
-     
+    # Downloads the latest package lists (important).
+    apt -y install software-properties-common
+    add-apt-repository universe
     apt-get -y update
-    apt -y install python3
-    apt install -y python3-pip
+    # Runs apt-get while ensuring that there are no user prompts that would
+    # cause the build process to hang.
+    # python3-tk is required by matplotlib.
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        python3 \
+        python3-tk \
+	    python3-distutils\
+        python3-pip
+    # Reduce the size of the image by deleting the package lists we downloaded,
+    # which are useless now.
+    rm -rf /var/lib/apt/lists/*
+    # Install Python modules.
     pip3 install setuptools
-    pip3 install numpy scipy pandas sklearn simplejson glob3
-    pip3 install xgboost
-   
+    pip3 install torch numpy matplotlib
